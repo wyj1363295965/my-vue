@@ -1,12 +1,13 @@
 import axios from 'axios'
+import qs from 'qs'
 
 const api = axios.create({
     baseURL: 'http://localhost:8083/api',
     timeout: 60 * 1000,
-    // headers: {
-    //     'Content-Type': 'application/json',
-    //     'Accept': 'application/json'
-    // },
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    },
     withCredentials: true // 允许跨域请求携带凭证
 })
 
@@ -17,6 +18,11 @@ api.interceptors.request.use(
         if (token) {
             config.headers.Authorization = `Bearer ${token}`
         }
+        // 处理 POST 请求的数据
+        // if (config.method === 'post' || config.method === 'put') {
+        //     config.data = qs.stringify(config.data)
+        //     config.headers['Content-Type'] = 'application/x-www-form-urlencoded'
+        // }
         return config
     },
     error => {
